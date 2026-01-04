@@ -1,14 +1,24 @@
-from dotenv import load_dotenv
-import os
+# app/core/config.py
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
-load_dotenv()
 
-class Settings:
-    APP_NAME = os.getenv("APP_NAME")
-    ENV = os.getenv("ENV")
-    MONGO_URI = os.getenv("MONGO_URI")
-    MONGO_DB = os.getenv("MONGO_DB")
-    JWT_SECRET = os.getenv("JWT_SECRET")
-    JWT_ALGORITHM = os.getenv("JWT_ALGORITHM")
+class Settings(BaseSettings):
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8"
+    )
+
+    APP_NAME: str
+    ENV: str
+
+    MONGO_URI: str
+    MONGO_DB_NAME: str
+
+    JWT_SECRET: str
+    JWT_ALGORITHM: str = "HS256"
+
+    CACHE_ENABLED: bool = True
+    CACHE_TTL_SECONDS: int = 60
+
 
 settings = Settings()
